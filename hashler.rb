@@ -20,6 +20,7 @@ istek = gets.chomp
 p a.fetch(:"#{istek}", "Ürün hakkında bu bilgiye ulaşılamıyor.") #Hata verecek durumda kendi ifademizi iletiriz.
 
 # Hash İçerisine Değer Atama
+
 puts "-----------------------------------"
 print "Ürün hakkında eklemek istediğiniz bilgi başlığı:"
 anahtar = gets.chomp
