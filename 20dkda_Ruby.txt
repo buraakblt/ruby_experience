@@ -1,0 +1,76 @@
+irb(main):001:0> class Greeter
+irb(main):002:1> def initialize(name = "World")
+irb(main):003:2> @name = name
+irb(main):004:2> end
+irb(main):005:1> def say_hi
+irb(main):006:2> puts "Hi #{@name} !"
+irb(main):007:2> end
+irb(main):008:1> def say_bye
+irb(main):009:2> puts "Bye #{@name}, come back soon."
+irb(main):010:2> end
+irb(main):011:1> end
+=> :say_bye
+irb(main):012:0> greeter = Greeter.new("Burak")
+=> #<Greeter:0x000001ab5a3d4f80 @name="Burak">
+irb(main):013:0> greeter.say_hi
+Hi Burak !
+=> nil
+irb(main):014:0> greeter.say_bye
+Bye Burak, come back soon.
+=> nil
+irb(main):015:0> greeter.@name
+Traceback (most recent call last):
+        3: from C:/Ruby26-x64/bin/irb.cmd:31:in `<main>'
+        2: from C:/Ruby26-x64/bin/irb.cmd:31:in `load'
+        1: from C:/Ruby26-x64/lib/ruby/gems/2.6.0/gems/irb-1.0.0/exe/irb:11:in `<top (required)>'
+SyntaxError ((irb):15: syntax error, unexpected tIVAR)
+greeter.@name
+        ^~~~~
+irb(main):016:0> Greeter.instance_methods
+=> [:say_hi, :say_bye, :instance_variable_defined?, :remove_instance_variable, :instance_of?, :kind_of?, :is_a?, :tap, :methods, :singleton_methods, :protected_methods, :instance_variables, :instance_variable_get, :instance_variable_set, :private_methods, :public_methods, :method, :singleton_method, :public_send, :public_method, :define_singleton_method, :extend, :to_enum, :enum_for, :<=>, :===, :=~, :!~, :eql?, :respond_to?, :freeze, :inspect, :object_id, :send, :to_s, :display, :nil?, :hash, :class, :singleton_class, :clone, :dup, :itself, :yield_self, :then, :taint, :tainted?, :untaint, :trust, :frozen?, :untrust, :untrusted?, :equal?, :!, :__id__, :==, :instance_exec, :!=, :instance_eval, :__send__]
+irb(main):017:0> Greeter.instance_methods(false)
+=> [:say_hi, :say_bye]
+irb(main):018:0> g.respond_to?("name")
+Traceback (most recent call last):
+        4: from C:/Ruby26-x64/bin/irb.cmd:31:in `<main>'
+        3: from C:/Ruby26-x64/bin/irb.cmd:31:in `load'
+        2: from C:/Ruby26-x64/lib/ruby/gems/2.6.0/gems/irb-1.0.0/exe/irb:11:in `<top (required)>'
+        1: from (irb):18
+NameError (undefined local variable or method `g' for main:Object)
+irb(main):019:0> g.respond_to?("say_hi")
+Traceback (most recent call last):
+        5: from C:/Ruby26-x64/bin/irb.cmd:31:in `<main>'
+        4: from C:/Ruby26-x64/bin/irb.cmd:31:in `load'
+        3: from C:/Ruby26-x64/lib/ruby/gems/2.6.0/gems/irb-1.0.0/exe/irb:11:in `<top (required)>'
+        2: from (irb):19
+        1: from (irb):19:in `rescue in irb_binding'
+NameError (undefined local variable or method `g' for main:Object)
+irb(main):020:0> greeter.respond_to?("name")
+=> false
+irb(main):021:0> greeter.respond_to?("say_hi")
+=> true
+irb(main):022:0> greeter.respond_to?("to_s")
+=> true
+irb(main):023:0> class Greeter
+irb(main):024:1> attr_accessor :name
+irb(main):025:1> end
+=> nil
+irb(main):026:0> greeter = Greeter.new("Andy")
+=> #<Greeter:0x000001ab59889f18 @name="Andy">
+irb(main):027:0> greeter.respond_to?("name")
+=> true
+irb(main):028:0> greeter.respond_to?("name=")
+=> true
+irb(main):029:0> greeter.say_hi
+Hi Andy !
+=> nil
+irb(main):030:0> greeter.name="Betty"
+=> "Betty"
+irb(main):031:0> greeter
+=> #<Greeter:0x000001ab59889f18 @name="Betty">
+irb(main):032:0> greeter.name
+=> "Betty"
+irb(main):033:0> greeter.say_hi
+Hi Betty !
+=> nil
+irb(main):034:0>
