@@ -1,6 +1,6 @@
 class Computer
     
-    $users = {"buraakblt" => "123456", "john22" => "123457"}
+    $users = {}
     @@files = {"algorithms.txt" => "2022-08-02 14:31:01 +0300", "lectures.pdf" => "2022-08-02 14:31:01 +0300"}
 
     def initialize(username, password)
@@ -10,6 +10,7 @@ class Computer
       $users[username] = password
 
     end
+
   
     def create(filename)
 
@@ -52,10 +53,11 @@ class Computer
 
     def Computer.get_users
 
-        $users.each do |key, value|
-            puts "Username: #{key}     Password: #{value}"
-        end
-  
+      $users.each do |key, value|
+
+        puts "Username: #{key}    Password: #{value}"
+      end
+
     end
 
     def Computer.get_files
@@ -67,20 +69,45 @@ class Computer
 
     def change_password
         print "Enter your current password: "
-        current_password = gets.chomp
+        current_password = gets.to_i
 
         if $users.key(current_password).nil?
             puts "Wrong password!"
         else
             puts "What will be your new password?"
-            new_password = gets.chomp
+            new_password = gets.to_i
             $users[@username] = new_password
             puts "Password change successful!"
+            push_users_to_file
         end
     end
 
   end
 
+  # Pulling the user informations from txt file
+  def pull_users_from_file
+    file = File.open("userInfo.txt", "r")
+    first_words = file.read.lines.map { |l| l.split(/\t/).first }
+    file.rewind
+    second_words = file.read.lines.map { |l| l.split(/\t/).last.to_i }
+    first_words.each { |i| $users.store(i, nil)}
+    file.close
+
+    i = 0
+    $users.each do |key, value|
+      $users[key] = second_words[i.to_i]
+      i += 1
+    end
+  end
+
+  # Pushing the current user informations to txt
+  def push_users_to_file
+    pushfile = File.open("userInfo.txt", "w")
+    $users.each { |key, value| pushfile.puts "#{key}\t#{value}"}
+  end
+
+  
+  pull_users_from_file
   puts "[1] Sign In\n[2] Sign Up"
   entrance = gets.to_i
   case entrance
@@ -104,15 +131,15 @@ class Computer
     end
       
     print "Password: "
-    password = gets.chomp
+    password = gets.to_i
   
-    while !$users.has_value?(password) do
+    while $users[username] != password do
       puts "Password is wrong! Do you want to try again? (y/n)"
       choice = gets.chomp
   
       if choice == "y"
           print "Password: "
-          password = gets.chomp
+          password = gets.to_i
       else
           begin
               exit
@@ -182,9 +209,10 @@ when 2
     print "Username: "
     username = gets.chomp
     print "Password: "
-    password = gets.chomp
+    password = gets.to_i
     
     $users.store(username, password)
+    push_users_to_file
     username = Computer.new(username, password)
     
     puts "Congratulations, your registration has been successfully completed!\n"
@@ -238,7 +266,9 @@ when 2
           puts "\nPress any key for continue..."
           press = gets.chomp
       else
+
         puts "Invalid entry!"
+
       end
     
     end
